@@ -688,7 +688,7 @@ def processFile(h2kElements)
               h2kElements[locationText].delete_element("AirLeakageTestData")
               # Change CGSB attribute to true (was set to "As Operated" by AirLeakageTestData section
               locationText = "HouseFile/House/NaturalAirInfiltration/Specifications/BlowerTest"
-              h2kElements[locationText].attributes["isCgsbTest"] = "true"
+              h2kElements[locationText].attributes["isCgsbTest"] = "false"
             end
             # Set the blower door test value in airChangeRate field
             locationText = "HouseFile/House/NaturalAirInfiltration/Specifications/BlowerTest"
@@ -696,8 +696,19 @@ def processFile(h2kElements)
 				#		$ACHRate = h2kElements[locationText].attributes["airChangeRate"].to_f
 
 
-            h2kElements[locationText].attributes["isCgsbTest"] = "true"
-            h2kElements[locationText].attributes["isCalculated"] = "true"
+            h2kElements[locationText].attributes["isCgsbTest"] = "false"
+            # Need to calculate the ELA manually. Equation is derived assuming 10 Pa for ELA and n=0.67
+            h2kElements[locationText].attributes["isCalculated"] = "false"
+            fELA = 0.379457*value.to_f*h2kElements["HouseFile/House/NaturalAirInfiltration/Specifications/House"].attributes["volume"].to_f
+            h2kElements[locationText].attributes["leakageArea"] = sprintf("%0.3f", fELA)
+
+            h2kElements[locationText].add_element("Pressure")
+            h2kElements[locationText+"/Pressure"].add_attribute("code","1")
+            h2kElements[locationText+"/Pressure"].add_element("English")
+            h2kElements[locationText+"/Pressure/English"].add_text("10 Pa")
+            h2kElements[locationText+"/Pressure"].add_element("French")
+            h2kElements[locationText+"/Pressure/French"].add_text("10 Pa")
+
           elsif( tag =~ /Opt-NLR/ && value != "NA" && !value.empty?)
             # Need to set the House/AirTightnessTest code attribute to "Blower door test values" (x)
             locationText = "HouseFile/House/NaturalAirInfiltration/Specifications/House/AirTightnessTest"
@@ -710,7 +721,7 @@ def processFile(h2kElements)
               h2kElements[locationText].delete_element("AirLeakageTestData")
               # Change CGSB attribute to true (was set to "As Operated" by AirLeakageTestData section
               locationText = "HouseFile/House/NaturalAirInfiltration/Specifications/BlowerTest"
-              h2kElements[locationText].attributes["isCgsbTest"] = "true"
+              h2kElements[locationText].attributes["isCgsbTest"] = "false"
             end
             # Set the blower door test value in airChangeRate field
             locationText = "HouseFile/House/NaturalAirInfiltration/Specifications/BlowerTest"
@@ -721,8 +732,18 @@ def processFile(h2kElements)
             fThisACH = 3.6*(fExtSurfArea/fThisVolume)*value.to_f
             h2kElements[locationText].attributes["airChangeRate"] = sprintf("%0.3f", fThisACH)
 
-            h2kElements[locationText].attributes["isCgsbTest"] = "true"
-            h2kElements[locationText].attributes["isCalculated"] = "true"
+            h2kElements[locationText].attributes["isCgsbTest"] = "false"
+            # Need to calculate the ELA manually. Equation is derived assuming 10 Pa for ELA and n=0.67
+            h2kElements[locationText].attributes["isCalculated"] = "false"
+            fELA = 0.379457*fThisACH*h2kElements["HouseFile/House/NaturalAirInfiltration/Specifications/House"].attributes["volume"].to_f
+            h2kElements[locationText].attributes["leakageArea"] = sprintf("%0.3f", fELA)
+
+            h2kElements[locationText].add_element("Pressure")
+            h2kElements[locationText+"/Pressure"].add_attribute("code","1")
+            h2kElements[locationText+"/Pressure"].add_element("English")
+            h2kElements[locationText+"/Pressure/English"].add_text("10 Pa")
+            h2kElements[locationText+"/Pressure"].add_element("French")
+            h2kElements[locationText+"/Pressure/French"].add_text("10 Pa")
 
           elsif( tag =~ /Opt-BuildingSite/ && value != "NA" )
             if(value.to_f < 1 || value.to_f > 8)
