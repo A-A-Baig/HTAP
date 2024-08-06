@@ -3249,9 +3249,11 @@
             "<Opt-win-NE-CON>": "NBC-zone4-window",
             "<Opt-win-NW-CON>": "NBC-zone4-window",
             "<FDWR_Low_Limit>" : "0.17",
-            "<Opt-win_Low_Limit>" : "NBC-zone6-window",
+            "<Opt-win_Low_Limit>" : "YHC-W10",
             "<FDWR_High_Limit>" : "0.22",
-            "<Opt-win_High_Limit>" : "NBC-zone8-window"
+            "<Opt-win_High_Limit>" : "YHC-W11",
+            "<FDWR_UltraHi_Limit>" : "0.30",
+            "<Opt-win_UltraHi_Limit>" : "YHC-W12"
           }
         },
         "costs": {
@@ -3275,7 +3277,9 @@
       "<FDWR_Low_Limit>",
       "<Opt-win_Low_Limit>",
       "<FDWR_High_Limit>",
-      "<Opt-win_High_Limit>"
+      "<Opt-win_High_Limit>",
+      "<FDWR_UltraHi_Limit>",
+      "<Opt-win_UltraHi_Limit>"
     ]
   },
   "Opt-Skylights": {

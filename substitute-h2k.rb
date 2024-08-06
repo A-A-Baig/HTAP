@@ -1401,6 +1401,10 @@ def processFile(h2kElements)
                   sHiWindow = valHash[tagIndex.to_s]
                 elsif (tagHash[tagIndex] =~ /FDWR_Low_Limit/)
                   fLowFDWR = valHash[tagIndex.to_s].to_f
+                elsif (tagHash[tagIndex] =~ /Opt-win_UltraHi_Limit/)
+                  sUltraWindow = valHash[tagIndex.to_s]
+                elsif (tagHash[tagIndex] =~ /FDWR_UltraHi_Limit/)
+                  fUltraFDWR = valHash[tagIndex.to_s].to_f
                 end
               end
 
@@ -1415,10 +1419,14 @@ def processFile(h2kElements)
                 # Building FDWR less than or equal to threshold. Use Low FDWR window
                 bOverride = true
                 sThisWindow = sLowWindow
-              elsif (fDWR >= fHighFDWR)
+              elsif (fDWR <= fHighFDWR)
                 # Building FDWR greater than or equal to threshold. Use High FDWR window
                 bOverride = true
                 sThisWindow = sHiWindow
+              elsif (fDWR <= fUltraFDWR)
+                # Building FDWR greater than or equal to threshold. Use High FDWR window
+                bOverride = true
+                sThisWindow = sUltraWindow
               else
                 # Keep the base windows
                 bOverride = false
@@ -1490,7 +1498,7 @@ def processFile(h2kElements)
               ChangeWinCodeByOrient( "NW", sThisWindow, h2kCodeElements, h2kElements, choiceEntry, tag )
             end
 
-          elsif (tag =~ /FDWR_Low_Limit/ || tag =~ /FDWR_High_Limit/ ||  tag =~ /Opt-win_Low_Limit/ || tag =~ /Opt-win_High_Limit/)
+          elsif (tag =~ /FDWR_Low_Limit/ || tag =~ /FDWR_High_Limit/ ||  tag =~ /Opt-win_Low_Limit/ || tag =~ /Opt-win_High_Limit/ || tag =~ /Opt-win_UltraHi_Limit/ || tag =~ /FDWR_UltraHi_Limit/)
             # Don't change anything. Taken care of last loop pass
           else
             if ( value == "NA" )
