@@ -1126,7 +1126,7 @@ def processFile(h2kElements)
 
             # query costing components
             achCostComponents = Hash.new
-            achCostComponents = Costing.getCostComponentList($gOptions,$gChoices,"Opt-ACH",achChoice)
+            achCostComponents, finalChoice = Costing.getCostComponentList($gOptions,$gChoices,"Opt-ACH",achChoice)
 
             #debug_out ("Cost components for OPT-ACH = #{achChoice}:\n #{achCostComponents.pretty_inspect}")
 
